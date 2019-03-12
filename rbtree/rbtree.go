@@ -1,12 +1,8 @@
-package main
+package rbtree
 
 import (
 	"fmt"
 )
-
-func main() {
-
-}
 
 type RBTree struct {
 	root *node
@@ -145,7 +141,11 @@ func nodePrint(n *node) {
 
 }
 func (t *RBTree) insert(v int) {
+	if t.root == nil {
+		t.root = &node{value: v, color: RBTBlack}
+	}
 	n := t.root
+
 	insertNode := &node{value: v, color: RBTRed}
 	var nf *node
 	for n != nil {
@@ -187,10 +187,8 @@ func (t *RBTree) insertFixUp(n *node) {
 			uncleNode.fatherNode.color = RBTRed
 			n = n.fatherNode.fatherNode
 			//	fmt.Println("condition1")
-
 		} else if n.fatherNode == n.fatherNode.fatherNode.leftNode {
 			//fmt.Println("condition2")
-
 			if n == n.fatherNode.leftNode {
 
 				n.fatherNode.fatherNode.color = RBTRed
