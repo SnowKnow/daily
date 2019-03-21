@@ -8,6 +8,7 @@ import (
 
 var tree *RBTree
 
+/**
 func TestInsert(t *testing.T) {
 	tree = &RBTree{}
 	for i := 1; i <= 1000; i++ {
@@ -15,7 +16,7 @@ func TestInsert(t *testing.T) {
 		tree.insert(x)
 	}
 	preperties(t)
-}
+}**/
 func TestDelete(t *testing.T) {
 	tree = &RBTree{}
 	for i := 1; i <= 1000; i++ {

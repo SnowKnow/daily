@@ -1,12 +1,11 @@
 package rbtree
 
-import (
-	"fmt"
-)
-
+//RBTree 红黑树本身为一个结构体，可以直接使用
 type RBTree struct {
 	root *node
 }
+
+//node 节点为一个结构体
 type node struct {
 	color      bool
 	leftNode   *node
@@ -15,43 +14,12 @@ type node struct {
 	value      int
 }
 
+//红黑通过bool类型来存储，并设置常量
 const (
 	RBTRed   = false
 	RBTBlack = true
 )
 
-func (t *RBTree) pathLength() (max, min int) {
-	return t.root.pathLength()
-}
-func (n *node) pathLength() (max, min int) {
-	if n == nil {
-		return
-	}
-	lmax, lmin := n.leftNode.pathLength()
-	rmax, rmin := n.rightNode.pathLength()
-	if lmax > rmax {
-		max = lmax
-	} else {
-		max = rmax
-	}
-	if lmin < lmin {
-		min = lmin
-	} else {
-		min = rmin
-	}
-	return max + 1, min + 1
-}
-
-func (n *node) blackHigh() (high int) {
-	if n == nil {
-		return
-	}
-	if n.color == RBTBlack {
-		return n.leftNode.blackHigh() + 1
-	}
-
-	return n.leftNode.blackHigh()
-}
 func (t *RBTree) leftRotate(n *node) {
 	rn := n.rightNode
 	//first give n's father to rn's father
@@ -96,53 +64,10 @@ func (t *RBTree) rightRotate(n *node) {
 
 }
 
-func (t *RBTree) print() {
-	nodePrint(t.root)
-	print("\n")
-
-}
-func (t *RBTree) printGra() {
-	nodePrintGra(t.root)
-
-}
-func nodePrintGra(ns ...*node) {
-	arr := make([]*node, 0, 0)
-	isNextPrint := false
-	for _, v := range ns {
-		if v != nil {
-			isNextPrint = true
-			if v.color {
-				fmt.Printf("b%d\t", v.value)
-			} else {
-				fmt.Printf("r%d\t", v.value)
-			}
-			arr = append(arr, v.leftNode, v.rightNode)
-
-		} else {
-			fmt.Print("nil\t")
-			arr = append(arr, nil, nil)
-
-		}
-
-	}
-	fmt.Println()
-	if isNextPrint {
-		nodePrintGra(arr...)
-	}
-}
-
-func nodePrint(n *node) {
-	if n == nil {
-		return
-	}
-	nodePrint(n.leftNode)
-	print("\t", n.value)
-	nodePrint(n.rightNode)
-
-}
 func (t *RBTree) insert(v int) {
 	if t.root == nil {
 		t.root = &node{value: v, color: RBTBlack}
+		return
 	}
 	n := t.root
 
@@ -159,11 +84,12 @@ func (t *RBTree) insert(v int) {
 			//TODO fix the condition that replace value
 			return
 		}
+
 	}
+	//设置新插入节点的父节点
 	insertNode.fatherNode = nf
-	if nf == nil {
-		t.root = insertNode
-	} else if v < nf.value {
+	//将新的节点挂到父节点上
+	if v < nf.value {
 		nf.leftNode = insertNode
 	} else {
 		nf.rightNode = insertNode
@@ -429,16 +355,22 @@ func (t *RBTree) transplant(u, v *node) {
 	}
 
 }
+
+//find 查找
 func (t *RBTree) find(v int) *node {
 	n := t.root
 	for n != nil {
 		if v < n.value {
+			//小于当前节点的话，往左节点找
 			n = n.leftNode
 		} else if v > n.value {
+			//大于当前节点的话，往右节点找
 			n = n.rightNode
 		} else {
+			//等于的话表示找到，返回
 			return n
 		}
 	}
+	//循环结束没找到，返回
 	return nil
 }
