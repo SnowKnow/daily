@@ -8,15 +8,15 @@ import (
 
 var tree *RBTree
 
-/**
 func TestInsert(t *testing.T) {
 	tree = &RBTree{}
 	for i := 1; i <= 1000; i++ {
 		x := rand.Int()
 		tree.insert(x)
+		preperties(t)
 	}
-	preperties(t)
-}**/
+
+}
 func TestDelete(t *testing.T) {
 	tree = &RBTree{}
 	for i := 1; i <= 1000; i++ {
